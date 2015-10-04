@@ -172,6 +172,14 @@
     (scroll-bar-mode -1)
     (start-projectile)))
 
+(defun sequester-backup-turds ()
+  (let ((dir "~/.emacs_backups"))
+    (progn
+      (unless (file-exists-p dir)
+	(make-directory dir))
+      (setq backup-directory-alist dir))))
+
 (if window-system (init-clean-graphical-emacs))
+(sequester-backup-turds)
 
 ;;; .emacs ends here
