@@ -21,6 +21,7 @@
 		      auto-complete
 		      flycheck
 		      discover-my-major
+		      smex
 		      enh-ruby-mode
 		      robe
 		      inf-ruby
@@ -30,6 +31,7 @@
 		      haskell-mode
 		      shm
 		      ac-haskell-process
+		      smartparens
 		      color-theme
 		      atom-dark-theme
 		      sublime-themes
@@ -47,13 +49,18 @@
 
 
 ;; global
-(add-hook 'after-init-hook #'global-flycheck-mode)
+(add-hook 'after-init-hook 'smartparens-global-mode)
 (load-theme 'wombat t)
 (setq linum-format "%d ")
 (setq default-truncate-lines t)
 (global-set-key (kbd "C-j") 'backward-word)
 (global-set-key (kbd "C-l") 'forward-word)
 (global-set-key (kbd "M-0") 'neotree-toggle)
+
+
+;; smex
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
 
 
 ;; javascript
@@ -78,6 +85,7 @@
 ;; haskell
 (add-hook 'haskell-mode-hook 'auto-complete-mode)
 (add-hook 'haskell-mode-hook 'linum-mode)
+(setq shm-program-name "~/Library/Haskell/bin/structured-haskell-mode")
 (add-hook 'haskell-mode-hook 'structured-haskell-mode)
 
 
