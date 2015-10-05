@@ -56,6 +56,8 @@
 (global-set-key (kbd "C-j") 'backward-word)
 (global-set-key (kbd "C-l") 'forward-word)
 (global-set-key (kbd "M-0") 'neotree-toggle)
+(add-hook 'prog-mode-hook 'auto-complete)
+(add-hook 'prog-mode-hook 'linum-mode)
 
 
 ;; smex
@@ -65,26 +67,18 @@
 
 ;; javascript
 (setq js-indent-level 2)
-(add-hook 'js-mode-hook 'auto-complete-mode)
-(add-hook 'js-mode-hook 'linum-mode)
 
 
 ;; ruby
 (add-hook 'ruby-mode-hook 'robe-mode)
-(add-hook 'ruby-mode-hook 'auto-complete-mode)
-(add-hook 'ruby-mode-hook 'linum-mode)
 (add-hook 'robe-mode-hook 'ac-robe-setup)
 
 
 ;; python
 (setq py-indent-level 4)
-(add-hook 'python-mode-hook 'auto-complete-mode)
-(add-hook 'python-mode-hook 'linum-mode)
 
 
 ;; haskell
-(add-hook 'haskell-mode-hook 'auto-complete-mode)
-(add-hook 'haskell-mode-hook 'linum-mode)
 (setq shm-program-name "~/Library/Haskell/bin/structured-haskell-mode")
 (add-hook 'haskell-mode-hook 'structured-haskell-mode)
 
@@ -174,10 +168,9 @@
 
 (defun sequester-backup-turds ()
   (let ((dir "~/.emacs_backups"))
-    (progn
-      (unless (file-exists-p dir)
-	(make-directory dir))
-      (setq backup-directory-alist dir))))
+    (unless (file-exists-p dir)
+      (make-directory dir))
+    (setq backup-directory-alist '(("." . dir)))))
 
 (if window-system (init-clean-graphical-emacs))
 (sequester-backup-turds)
