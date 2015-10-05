@@ -43,19 +43,9 @@
     (package-install p)))
 
 
-;; formatting
-(setq require-final-newline t)
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-
 ;; global
-(add-hook 'after-init-hook 'smartparens-global-mode)
-(load-theme 'wombat t)
 (setq linum-format "%d ")
 (setq default-truncate-lines t)
-(global-set-key (kbd "C-j") 'backward-word)
-(global-set-key (kbd "C-l") 'forward-word)
-(global-set-key (kbd "M-0") 'neotree-toggle)
 (add-hook 'prog-mode-hook 'auto-complete)
 (add-hook 'prog-mode-hook 'linum-mode)
 
@@ -67,6 +57,7 @@
 
 ;; javascript
 (setq js-indent-level 2)
+(add-hook 'js-mode-hook 'smartparens-mode)
 
 
 ;; ruby
@@ -76,6 +67,7 @@
 
 ;; python
 (setq py-indent-level 4)
+(add-hook 'py-mode-hook 'smartparens-mode)
 
 
 ;; haskell
@@ -154,6 +146,10 @@
 	(rename-buffer (persp-ansi-buffer-name)))
     (switch-to-buffer-other-window (persp-ansi-buffer-name))))
 
+(defun init-whitespace-handling ()
+  (setq require-final-newline t)
+  (add-hook 'before-save-hook 'delete-trailing-whitespace))
+
 (defun init-clean-graphical-emacs ()
   (progn
     (setq inhibit-splash-screen t)
@@ -166,13 +162,28 @@
     (scroll-bar-mode -1)
     (start-projectile)))
 
+(defun init-terminal-emacs ()
+  (load-theme 'wombat t))
+
 (defun sequester-backup-turds ()
   (let ((dir "~/.emacs_backups"))
     (unless (file-exists-p dir)
       (make-directory dir))
-    (setq backup-directory-alist '(("." . dir)))))
+    (print dir)
+    (setq backup-directory-alist `(("." . ,dir)))))
 
-(if window-system (init-clean-graphical-emacs))
+(defun global-set-keybindings ()
+  (global-set-key (kbd "C-j") 'backward-word)
+  (global-set-key (kbd "C-l") 'forward-word)
+  (global-set-key (kbd "M-0") 'neotree-toggle))
+
+
+(init-whitespace-handling)
 (sequester-backup-turds)
+(global-set-keybindings)
+
+(if window-system
+    (init-clean-graphical-emacs)
+  (init-terminal-emacs))
 
 ;;; .emacs ends here
