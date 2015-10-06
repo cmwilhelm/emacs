@@ -165,12 +165,17 @@
 (defun init-terminal-emacs ()
   (load-theme 'wombat t))
 
+(defun make-dir-if-doesnt-exist (dir)
+  (unless (file-exists-p dir)
+    (make-directory dir)))
+
 (defun sequester-backup-turds ()
-  (let ((dir "~/.emacs_backups"))
-    (unless (file-exists-p dir)
-      (make-directory dir))
-    (print dir)
-    (setq backup-directory-alist `(("." . ,dir)))))
+  (let ((backup-dir "~/.emacs_backups")
+	(autosave-dir "~/.emacs_autosaves"))
+    (make-dir-if-doesnt-exist backup-dir)
+    (make-dir-if-doesnt-exist autosave-dir)
+    (setq backup-directory-alist `(("." . ,backup-dir)))
+    (setq auto-save-file-name-transforms `((".*" ,autosave-dir t)))))
 
 (defun global-set-keybindings ()
   (global-set-key (kbd "C-j") 'backward-word)
